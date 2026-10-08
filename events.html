@@ -1,0 +1,46 @@
+{% extends 'library/base.html' %}
+{% block title %}Events — Library System{% endblock %}
+{% block nav_events %}active{% endblock %}
+{% block page_title %}Events{% endblock %}
+{% block page_subtitle %}Library events and room bookings{% endblock %}
+
+{% block content %}
+<div class="table-card">
+    <div class="table-header">
+        <h2>🎉 Event Schedule</h2>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Room</th>
+                <th>Branch</th>
+                <th>Capacity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr>
+                <td style="font-weight: 500; color: var(--gold);">{{ event.eventname }}</td>
+                <td>{{ event.eventdate }}</td>
+                <td>{{ event.starttime }}</td>
+                <td>{{ event.endtime }}</td>
+                <td><span class="badge badge-blue">{{ event.room.roomname }}</span></td>
+                <td style="color: var(--text-muted);">{{ event.room.branch }}</td>
+                <td>{{ event.room.capacity }} seats</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">
+                <div class="empty-state">
+                    <div class="empty-icon">🎉</div>
+                    <p>No events scheduled</p>
+                </div>
+            </td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'library/base.html' %}
+{% block title %}Staff — Library System{% endblock %}
+{% block nav_staff %}active{% endblock %}
+{% block page_title %}Staff{% endblock %}
+{% block page_subtitle %}Library staff and personnel records{% endblock %}
+
+{% block content %}
+<div class="table-card">
+    <div class="table-header">
+        <h2>🧑‍💼 Staff Directory</h2>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Position</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Hire Date</th>
+                <th>Mentor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in staff %}
+            <tr>
+                <td style="color: var(--text-muted);">#{{ s.staffid }}</td>
+                <td style="font-weight: 500;">{{ s.firstname }} {{ s.lastname }}</td>
+                <td>
+                    {% if s.position == 'Senior Librarian' %}
+                        <span class="badge badge-gold">{{ s.position }}</span>
+                    {% else %}
+                        <span class="badge badge-blue">{{ s.position }}</span>
+                    {% endif %}
+                </td>
+                <td style="color: var(--text-muted);">{{ s.email }}</td>
+                <td>{{ s.phonenumber }}</td>
+                <td>{{ s.hiredate }}</td>
+                <td>
+                    {% if s.mentor %}
+                        {{ s.mentor.firstname }} {{ s.mentor.lastname }}
+                    {% else %}
+                        <span style="color: var(--text-muted);">—</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">
+                <div class="empty-state">
+                    <div class="empty-icon">🧑‍💼</div>
+                    <p>No staff records found</p>
+                </div>
+            </td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

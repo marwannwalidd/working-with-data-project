@@ -1,0 +1,59 @@
+{% extends 'library/base.html' %}
+{% block title %}Fines — Library System{% endblock %}
+{% block nav_fines %}active{% endblock %}
+{% block page_title %}Fines{% endblock %}
+{% block page_subtitle %}Outstanding and paid fine records{% endblock %}
+
+{% block content %}
+<div class="table-card">
+    <div class="table-header">
+        <h2>💰 Fine Records</h2>
+        <div style="display: flex; gap: 8px;">
+            <a href="?status=all" class="filter-btn {% if filter_status == 'all' %}active{% endif %}">All</a>
+            <a href="?status=unpaid" class="filter-btn {% if filter_status == 'unpaid' %}active{% endif %}">Unpaid</a>
+            <a href="?status=paid" class="filter-btn {% if filter_status == 'paid' %}active{% endif %}">Paid</a>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Fine ID</th>
+                <th>Member</th>
+                <th>Loan ID</th>
+                <th>Amount</th>
+                <th>Issued Date</th>
+                <th>Paid Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fine in fines %}
+            <tr>
+                <td style="color: var(--text-muted);">#{{ fine.fineid }}</td>
+                <td style="font-weight: 500;">
+                    {{ fine.loan.member.firstname }} {{ fine.loan.member.lastname }}
+                </td>
+                <td style="color: var(--text-muted);">#{{ fine.loan.loanid }}</td>
+                <td style="color: var(--gold); font-weight: 600;">{{ fine.amount }} EGP</td>
+                <td>{{ fine.issueddate }}</td>
+                <td>{{ fine.paiddate|default:"—" }}</td>
+                <td>
+                    {% if fine.paymentstatus == 'Paid' %}
+                        <span class="badge badge-green">Paid</span>
+                    {% else %}
+                        <span class="badge badge-red">Unpaid</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">
+                <div class="empty-state">
+                    <div class="empty-icon">💰</div>
+                    <p>No fines found</p>
+                </div>
+            </td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

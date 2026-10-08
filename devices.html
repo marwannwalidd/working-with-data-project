@@ -1,0 +1,44 @@
+{% extends 'library/base.html' %}
+{% block title %}Devices — Library System{% endblock %}
+{% block nav_devices %}active{% endblock %}
+{% block page_title %}Digital Devices{% endblock %}
+{% block page_subtitle %}E-readers, tablets and digital equipment{% endblock %}
+
+{% block content %}
+<div class="table-card">
+    <div class="table-header">
+        <h2>💻 Device Inventory</h2>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Device Type</th>
+                <th>Manufacturer</th>
+                <th>Serial Number</th>
+                <th>Storage (GB)</th>
+                <th>Replacement Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for device in devices %}
+            <tr>
+                <td style="font-weight: 500; color: var(--gold);">{{ device.asset.title }}</td>
+                <td><span class="badge badge-blue">{{ device.devicetype }}</span></td>
+                <td>{{ device.manufacturer }}</td>
+                <td style="color: var(--text-muted); font-size: 13px;">{{ device.serialnumber }}</td>
+                <td>{{ device.datacapgb }} GB</td>
+                <td style="color: var(--green); font-weight: 600;">{{ device.asset.replacementcost }} EGP</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6">
+                <div class="empty-state">
+                    <div class="empty-icon">💻</div>
+                    <p>No devices found</p>
+                </div>
+            </td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

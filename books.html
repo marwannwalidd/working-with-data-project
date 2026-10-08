@@ -1,0 +1,54 @@
+{% extends 'library/base.html' %}
+{% block title %}Books — Library System{% endblock %}
+{% block nav_books %}active{% endblock %}
+{% block page_title %}Books{% endblock %}
+{% block page_subtitle %}All books in the library catalog{% endblock %}
+
+{% block content %}
+<div class="table-card">
+    <div class="table-header">
+        <h2>📖 Book Catalog</h2>
+        <form method="get" style="display:flex; gap:8px; align-items:center;">
+            <div class="search-box">
+                <span>🔍</span>
+                <input type="text" name="search" placeholder="Search title, author, genre..." value="{{ search }}">
+            </div>
+            <button type="submit" class="filter-btn active">Search</button>
+            {% if search %}<a href="/books/" class="filter-btn">Clear</a>{% endif %}
+        </form>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Publisher</th>
+                <th>Year</th>
+                <th>Pages</th>
+                <th>ISBN</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td style="font-weight: 500; color: var(--gold);">{{ book.asset.title }}</td>
+                <td>{{ book.author }}</td>
+                <td><span class="badge badge-blue">{{ book.genre }}</span></td>
+                <td style="color: var(--text-muted);">{{ book.publisher }}</td>
+                <td>{{ book.publishyear }}</td>
+                <td>{{ book.pagecount }}</td>
+                <td style="color: var(--text-muted); font-size: 12px;">{{ book.isbn }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">
+                <div class="empty-state">
+                    <div class="empty-icon">📖</div>
+                    <p>No books found{% if search %} for "{{ search }}"{% endif %}</p>
+                </div>
+            </td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

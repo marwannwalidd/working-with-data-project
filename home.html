@@ -1,0 +1,115 @@
+{% extends 'library/base.html' %}
+{% block title %}Dashboard — Library System{% endblock %}
+{% block nav_home %}active{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Welcome to LibraryOS — Cairo Branch{% endblock %}
+
+{% block content %}
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-value">{{ total_members }}</div>
+        <div class="stat-label">Total Members</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">📖</div>
+        <div class="stat-value">{{ total_books }}</div>
+        <div class="stat-label">Books in System</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">🔄</div>
+        <div class="stat-value">{{ total_loans }}</div>
+        <div class="stat-label">Total Loans</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">📤</div>
+        <div class="stat-value">{{ active_loans }}</div>
+        <div class="stat-label">Active Loans</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">⚠️</div>
+        <div class="stat-value">{{ unpaid_fines }}</div>
+        <div class="stat-label">Unpaid Fines</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">🧑‍💼</div>
+        <div class="stat-value">{{ total_staff }}</div>
+        <div class="stat-label">Staff Members</div>
+    </div>
+</div>
+
+<div class="two-col">
+
+    <div class="table-card">
+        <div class="table-header">
+            <h2>📅 Upcoming Events</h2>
+            <a href="/events/" class="filter-btn">View All</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Date</th>
+                    <th>Room</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in upcoming_events %}
+                <tr>
+                    <td>{{ event.eventname }}</td>
+                    <td>{{ event.eventdate }}</td>
+                    <td>{{ event.room.roomname }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3">
+                    <div class="empty-state">
+                        <div class="empty-icon">📅</div>
+                        <p>No upcoming events</p>
+                    </div>
+                </td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-card">
+        <div class="table-header">
+            <h2>🔄 Recent Loans</h2>
+            <a href="/loans/" class="filter-btn">View All</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Member</th>
+                    <th>Copy</th>
+                    <th>Due</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in recent_loans %}
+                <tr>
+                    <td>{{ loan.member.firstname }} {{ loan.member.lastname }}</td>
+                    <td>#{{ loan.copy.copyid }}</td>
+                    <td>
+                        {% if loan.returndate %}
+                            <span class="badge badge-green">Returned</span>
+                        {% else %}
+                            {{ loan.duedate }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3">
+                    <div class="empty-state">
+                        <div class="empty-icon">🔄</div>
+                        <p>No loans yet</p>
+                    </div>
+                </td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

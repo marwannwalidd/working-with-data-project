@@ -1,0 +1,57 @@
+{% extends 'library/base.html' %}
+{% block title %}Loans — Library System{% endblock %}
+{% block nav_loans %}active{% endblock %}
+{% block page_title %}Loans{% endblock %}
+{% block page_subtitle %}Track all asset loans and checkouts{% endblock %}
+
+{% block content %}
+<div class="table-card">
+    <div class="table-header">
+        <h2>🔄 Loan Records</h2>
+        <div style="display: flex; gap: 8px;">
+            <a href="?filter=active" class="filter-btn {% if filter_type == 'active' %}active{% endif %}">Active</a>
+            <a href="?filter=returned" class="filter-btn {% if filter_type == 'returned' %}active{% endif %}">Returned</a>
+            <a href="?filter=all" class="filter-btn {% if filter_type == 'all' %}active{% endif %}">All</a>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Loan ID</th>
+                <th>Member</th>
+                <th>Asset</th>
+                <th>Checkout</th>
+                <th>Due Date</th>
+                <th>Return Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for loan in loans %}
+            <tr>
+                <td style="color: var(--text-muted);">#{{ loan.loanid }}</td>
+                <td style="font-weight: 500;">{{ loan.member.firstname }} {{ loan.member.lastname }}</td>
+                <td>{{ loan.copy.asset.title }}</td>
+                <td>{{ loan.checkoutdate }}</td>
+                <td>{{ loan.duedate }}</td>
+                <td>{{ loan.returndate|default:"—" }}</td>
+                <td>
+                    {% if loan.returndate %}
+                        <span class="badge badge-green">Returned</span>
+                    {% else %}
+                        <span class="badge badge-red">On Loan</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">
+                <div class="empty-state">
+                    <div class="empty-icon">🔄</div>
+                    <p>No loans found for this filter</p>
+                </div>
+            </td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
